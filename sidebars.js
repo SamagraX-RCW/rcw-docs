@@ -4,7 +4,7 @@ module.exports = {
       type: 'category',
       label: 'Getting Started',
       collapsed: false,
-      items: ['index', 'intro/environment', 'intro/cli'],
+      items: ['index', 'intro/setup', 'intro/cli'],
     },
     
   ],
