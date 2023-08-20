@@ -3,58 +3,98 @@ title: Setup
 ---
 
 <head>
-  <title>Environment Setup | Node & NPM Environment for Ionic App Setup</title>
+  <title>Environment Setup</title>
   <meta
     name="description"
-    content="To get started with Ionic Framework, the only requirement is a Node & npm environment. Learn what environment setup is required for your Ionic apps."
+    content="To get started with DevOps pipeline just run the scripts for installing the dependencies"
   />
 </head>
 
 To get started with setting up the DevOps Pipeline.
 
-### Pre-requisites:
+## Pre-requisites:
 - Jenkins Server for running pipelines
 - Hashicorp Vault for storing secrets
 - Docker Swarm (This could be your localhost as well)
 - Private Docker Registry
 - Ansible for deploying swarm nodes
 
-### Setting up the Pipeline
-- **Clone the repository**
+## Setting up the Pipeline
+- ### **Clone the repository**
 ```
 git clone https://github.com/SamagraX-RCW/devops.git
 ```
 
 
-- **Run the scripts to install Docker & docker-compose** 
+- ### **Run the scripts to install Docker, docker-compose & Ansible** 
 ```
 chmod +x setup.sh
 ./setup.sh
 ```
 <!-- - Get your SSL key from CA(Certified Authority) and paste it inside the ssl certificate(docker-registry.crt) -->
 
-- **Now run the compose file to deploy Jenkins, registry & vault** 
+- ### **Now run the compose file to deploy Jenkins, registry & vault** 
 ```
 docker compose up -d
 ```
 
-- **Configure Vault token**
-  - exec into the container for retrieving token that would be access SSL certs for nginx.
-```
-docker ps
-```
+- ### **Configure Vault token**
+  - **Run the Script for configuring the Vault token**
+    ```
+    chmod +x ./scripts/set_env.sh
+    ./scripts/set_env.sh
+    ```
+
+  - **Configure the script if you want to change the registry** username/password
+
+  ![registry credentials image](../assets/registry_cred.png)
+
+  ***Note: This is store the registry username & password inside the vault***
+
+  - **Save the inital root token & unseal keys **Securely** for future use-cases**
+
+  - *Note:This script will keep the environment variable of Registry Username & Password inside the Jenkins container*
+  
 
 
-- **Setup environment variables in Jenkins**
-  - Go to **Dashboard** -> **Manage Jenkins** -> **System**
-  - Add **VAULT_ADDR_DEV** and **VAULT_TOKEN_DEV** with corresponding values you got while setting up Hashicorp Vault
-    - VAULT_ADDR_DEV = 
+- ### **SSL Configuration for Nginx**(Optional)
+  - **Copy the SSL certificates and paste it inside the *nginx_config/ssl* folder**
 
-- **Add SSL Certificates in the Vault**
+  - **Now run the script**
+    ```
+    chmod +x ./scripts/set_up_ssl.sh
+    ./scripts/set_up_ssl.sh
+    ```
+  
+  - ***This script will store the ssl certs content inside the Vault as KV(key value) and keep as environment variable inside the Nginx container***
 
-  - **Don't have SSL certificate**
+- ### **Deploy Swarm and other Services**
+  - **Copy the hostname and paste in inside the inventory/hosts folder**
 
-- **Deploy Swarm Server**
+  - **Copy this command the paste this inside the script section inside the jenkins job**
+
   ```
   ansible-playbook -i ./ansible_workspace_dir/inventory/hosts ./ansible_workspace_dir/main.yml
   ```
+
+  - **Now Jenkins will run ansible playbook after the build has been successful**
+
+
+
+## Adding Ansible Roles for Services
+
+- ### **Run the Script**
+
+```
+chmod +x /scripts/roles.sh
+./scripts/roles.sh
+```
+
+- **Give the name of the role**
+
+    eg. monitoring
+
+
+- **Now give the variables for that role**
+
+    eg. no. of replicas : 1/2/3

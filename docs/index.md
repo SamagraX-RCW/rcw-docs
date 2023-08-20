@@ -40,28 +40,13 @@ At Samagra, we're passionate about adopting DevOps practices and improve the sof
 
 Let's get started with the guide.
 
-### Sub Heading -1
-"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
-
-
-### Sub Heading -2
-
-"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
 
 
 ## Appflow
+![samagra-devops architecture](../docs/assets/samagra_arch.png)
 
-Your App Flow
-
-## Ecosystem
-
-Your App's Ecosystem
-
-### Join the Community
-
-There are millions of Ionic developers in over 200 countries worldwide. Here are some ways to join:
 
 
 ## License
 
-Your Project license
+MIT License
