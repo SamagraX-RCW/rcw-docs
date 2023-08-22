@@ -56,6 +56,12 @@ docker compose up -d
   - *Note:This script will keep the environment variable of Registry Username & Password inside the Jenkins container*
   
 
+- ### **Configure Jenkins Credentials for Private Registry**
+  **Go to** 
+
+  Dashboard > RCW > deploy-staging > Credentials > docker-server > Update with **https://nginx-reverse-proxy:80 -u <registry_username> -p <registry_password>**, use port 443 if you are using SSL
+
+
 
 - ### **SSL Configuration for Nginx**(Optional)
   - **Copy the SSL certificates and paste it inside the *nginx_config/ssl* folder**
