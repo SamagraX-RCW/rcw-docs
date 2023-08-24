@@ -4,9 +4,15 @@ module.exports = {
       type: 'category',
       label: 'Getting Started',
       collapsed: false,
-      items: ['index', 'intro/setup', 'intro/cli'],
+      items: ['index'],
     },
-    
+    {
+      type: 'category',
+      label: 'Setup',
+      collapsed: false,
+      items: ['setup/swarm_based', 'setup/onPremise_based'],
+    },
+
   ],
 
   // api: [{

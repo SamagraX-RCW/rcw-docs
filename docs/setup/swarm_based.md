@@ -1,16 +1,16 @@
 ---
-title: Setup
+title: Swarm Based Deployment
 ---
 
 <head>
   <title>Environment Setup</title>
   <meta
     name="description"
-    content="To get started with DevOps pipeline just run the scripts for installing the dependencies"
+    content="Here we'll deploy our pipeline in the Docker Container"
   />
 </head>
 
-To get started with setting up the DevOps Pipeline.
+Here we'll deploy our pipeline in the Docker Container using compose.
 
 ## Pre-requisites:
 - Jenkins Server for running pipelines
@@ -39,25 +39,25 @@ docker compose up -d
 ```
 
 - ### **Configure Vault token**
-  - **Run the Script for configuring the Vault token**
+
+  - **Configure the script(set_env.sh) if you want to change the registry** username/password
+
+  ![registry credentials image](../assets/registry_cred.png)
+
+  ***Note: This will store the registry username & password inside the vault***
+
+  - **Save the inital root token & unseal keys **Securely** for future use-cases**
+
+  - *Note:This script will mount the file containing the Registry Username & Password inside the Jenkins container for pushing to registry*
+
+  - **Now run the Script**
     ```
     chmod +x ./scripts/set_env.sh
     ./scripts/set_env.sh
     ```
 
-  - **Configure the script if you want to change the registry** username/password
-
-  ![registry credentials image](../assets/registry_cred.png)
-
-  ***Note: This is store the registry username & password inside the vault***
-
-  - **Save the inital root token & unseal keys **Securely** for future use-cases**
-
-  - *Note:This script will keep the environment variable of Registry Username & Password inside the Jenkins container*
-  
-
 - ### **Configure Jenkins Credentials for Private Registry**
-  **Go to** 
+  **Update the Credentials in Jenkins:** 
 
   Dashboard > RCW > deploy-staging > Credentials > docker-server > Update with **https://nginx-reverse-proxy:80 -u <registry_username> -p <registry_password>**, use port 443 if you are using SSL
 
