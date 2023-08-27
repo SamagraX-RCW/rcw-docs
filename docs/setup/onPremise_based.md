@@ -15,7 +15,6 @@ To get started with setting up the DevOps Pipeline.
 ## Pre-requisites:
 - Jenkins Server for running pipelines
 - Hashicorp Vault for storing secrets
-- Docker Swarm (This could be your localhost as well)
 - Private Docker Registry
 - Ansible for deploying swarm nodes
 
@@ -26,35 +25,27 @@ git clone https://github.com/SamagraX-RCW/devops.git
 ```
 
 
-- ### **Run the scripts to install Docker, docker-compose & Ansible** 
+- ### **Run the scripts to install Docker & Ansible** 
 ```
 chmod +x setup.sh
 ./setup.sh
 ```
 <!-- - Get your SSL key from CA(Certified Authority) and paste it inside the ssl certificate(docker-registry.crt) -->
 
-- ### **Now run the compose file to deploy Jenkins, registry & vault** 
-```
-docker compose up -d
-```
+- ### **[Install Jenkins](https://www.jenkins.io/doc/book/installing/)** 
 
-- ### **Configure Vault token**
-  - **Run the Script for configuring the Vault token**
-    ```
-    chmod +x ./scripts/set_env.sh
-    ./scripts/set_env.sh
-    ```
-
-  - **Configure the script if you want to change the registry** username/password
-
-  ![registry credentials image](../assets/registry_cred.png)
-
-  ***Note: This is store the registry username & password inside the vault***
-
-  - **Save the inital root token & unseal keys **Securely** for future use-cases**
-
-  - *Note:This script will keep the environment variable of Registry Username & Password inside the Jenkins container*
+- ### **[Configure Vault token](https://developer.hashicorp.com/vault/tutorials/getting-started/getting-started-deploy)**
+  - Generate Unseal and Root token
   
+  
+- ### **Intialize Swarm Managers and Workers**
+
+  - **Add your manager and worker hosts in the host file**
+
+  - **Run the playbook**
+  ```
+  ansible-playbook -i ./ansible_workspace_dir/inventory/hosts ./ansible_workspace_dir/main.yml
+  ```
 
 - ### **Configure Jenkins Credentials for Private Registry**
   **Go to** 
@@ -74,17 +65,8 @@ docker compose up -d
   
   - ***This script will store the ssl certs content inside the Vault as KV(key value) and keep as environment variable inside the Nginx container***
 
-- ### **Deploy Swarm and other Services**
-  - **Copy the hostname and paste in inside the inventory/hosts folder**
-
-  - **Copy this command the paste this inside the script section inside the jenkins job**
-
-  ```
-  ansible-playbook -i ./ansible_workspace_dir/inventory/hosts ./ansible_workspace_dir/main.yml
-  ```
 
   - **Now Jenkins will run ansible playbook after the build has been successful**
-
 
 
 ## Adding Ansible Roles for Services
