@@ -37,30 +37,37 @@ chmod +x setup.sh
 ```
 docker compose up -d
 ```
+  - **Get the initial admin password**
+```
+docker exec -it jenkins /bin/sh
+cat /var/jenkins_home/secrets/initialAdminPassword
+```
 
-- ### **Configure Vault token**
+  - **Restart the Jenkins Container to load all the jobs**
 
-  - **Configure the script(set_env.sh) if you want to change the registry** username/password
+- ### **Configure Vault**
 
-  ![registry credentials image](../assets/registry_cred.png)
+  - **Run the script to init the vault & generate unseal tokens**
+  ```
+  chmod +x setup_vault_gha.sh
+  ./setup_vault_gha.sh
+  ```
 
-  ***Note: This will store the registry username & password inside the vault***
+  ***Note: This will store the registry username & password (admin/admin) inside the vault***
 
-  - **Save the inital root token & unseal keys **Securely** for future use-cases**
+  - **Run the script to get registry username and password for vault**
 
-  - *Note:This script will mount the file containing the Registry Username & Password inside the Jenkins container for pushing to registry*
-
-  - **Now run the Script**
-    ```
-    chmod +x ./scripts/set_env.sh
-    ./scripts/set_env.sh
-    ```
+  ```
+  chmod +x ./scripts/get_secrets.sh
+  ./scripts/get_secrets.sh
+  ```
 
 - ### **Configure Jenkins Credentials for Private Registry**
   **Update the Credentials in Jenkins:** 
 
-  Dashboard > RCW > deploy-staging > Credentials > docker-server > Update with **https://nginx-reverse-proxy:80 -u <registry_username> -p <registry_password>**, use port 443 if you are using SSL
-
+  **Dashboard > RCW > deploy-staging > Credentials > docker-server >** 
+  
+  Update with **https://nginx-reverse-proxy:80 -u <registry_username> -p <registry_password>**, use port 443 if you are using SSL
 
 
 - ### **SSL Configuration for Nginx**(Optional)

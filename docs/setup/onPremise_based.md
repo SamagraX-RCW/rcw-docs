@@ -25,36 +25,38 @@ git clone https://github.com/SamagraX-RCW/devops.git
 ```
 
 
-- ### **Run the scripts to install Docker & Ansible** 
+- #### **Copy the host ip address and paste it inside ansible_workspace_dir/inventory/hosts**
+ 
+
+
+- ### **Run the scripts to install Ansible and start services on admin nodes** 
+
 ```
-chmod +x setup.sh
-./setup.sh
+chmod +x ./scripts/ansible_init.sh
+./scripts/ansible_init.sh
 ```
-<!-- - Get your SSL key from CA(Certified Authority) and paste it inside the ssl certificate(docker-registry.crt) -->
 
-- ### **[Install Jenkins](https://www.jenkins.io/doc/book/installing/)** 
-
-- ### **[Configure Vault token](https://developer.hashicorp.com/vault/tutorials/getting-started/getting-started-deploy)**
-  - Generate Unseal and Root token
-  
-  
-- ### **Intialize Swarm Managers and Workers**
-
-  - **Add your manager and worker hosts in the host file**
-
-  - **Run the playbook**
-  ```
-  ansible-playbook -i ./ansible_workspace_dir/inventory/hosts ./ansible_workspace_dir/main.yml
-  ```
 
 - ### **Configure Jenkins Credentials for Private Registry**
   **Go to** 
 
-  Dashboard > RCW > deploy-staging > Credentials > docker-server > Update with **https://nginx-reverse-proxy:80 -u <registry_username> -p <registry_password>**, use port 443 if you are using SSL
+  Dashboard > RCW > deploy-staging > Credentials > docker-server > Update with **http://localhost:80**
+
+  - Also add ***username and password*** inside Jenkins credentials
 
 
+- ### **Initialize Docker Swarm server**
 
-- ### **SSL Configuration for Nginx**(Optional)
+  ```
+  ansible-playbook -i ./ansible_workspace_dir/inventory/hosts ./ansible_workspace_dir/main.yml
+  ```
+
+- ### **Initialize RCW services**
+```
+ansible-playbook -i ./ansible_workspace_dir/inventory/hosts ./rcw-playboook.yml
+```
+
+<!-- - ### **SSL Configuration for Nginx**(Optional)
   - **Copy the SSL certificates and paste it inside the *nginx_config/ssl* folder**
 
   - **Now run the script**
@@ -66,10 +68,10 @@ chmod +x setup.sh
   - ***This script will store the ssl certs content inside the Vault as KV(key value) and keep as environment variable inside the Nginx container***
 
 
-  - **Now Jenkins will run ansible playbook after the build has been successful**
+  - **Now Jenkins will run ansible playbook after the build has been successful** -->
 
 
-## Adding Ansible Roles for Services
+<!-- ## Adding Ansible Roles for Services
 
 - ### **Run the Script**
 
@@ -85,4 +87,4 @@ chmod +x /scripts/roles.sh
 
 - **Now give the variables for that role**
 
-    eg. no. of replicas : 1/2/3
+    eg. no. of replicas : 1/2/3 -->
