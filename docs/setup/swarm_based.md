@@ -26,24 +26,35 @@ git clone https://github.com/SamagraX-RCW/devops.git
 ```
 
 
-- ### **Run the scripts to install Docker, docker-compose & Ansible** 
+- ### **Run the scripts to install Docker and Ansible** 
 ```
-chmod +x setup.sh
-./setup.sh
+chmod +x ./scripts/setup.sh
+./scripts/setup.sh
 ```
 <!-- - Get your SSL key from CA(Certified Authority) and paste it inside the ssl certificate(docker-registry.crt) -->
 
-- ### **Now run the compose file to deploy Jenkins, registry & vault** 
+- ### **Install and Start Jenkins Service**
+```
+chmod +x ./scripts/jenkins_init.sh
+./scripts/jenkins_init.sh
+```
+
+- ### **Configure Jenkins Credentials for Private Registry**
+    - #### **Update the Registry Credentials in Jenkins:** 
+
+        **Dashboard > RCW > deploy-staging > Credentials > docker-server**
+        
+        Update with **https://nginx-reverse-proxy:80**, also create new credentials for registry username and password**
+
+  - #### **Add Vault Server Address and Token Secret**
+
+
+
+
+- ### **Now run the compose file to deploy Registry, Nginx and Vault** 
 ```
 docker compose up -d
 ```
-  - **Get the initial admin password**
-```
-docker exec -it jenkins /bin/sh
-cat /var/jenkins_home/secrets/initialAdminPassword
-```
-
-  - **Restart the Jenkins Container to load all the jobs**
 
 - ### **Configure Vault**
 
@@ -55,20 +66,12 @@ cat /var/jenkins_home/secrets/initialAdminPassword
 
   ***Note: This will store the registry username & password (admin/admin) inside the vault***
 
-  - **Run the script to get registry username and password for vault**
+  - **Run the script to get registry username and password from vault**
 
   ```
   chmod +x ./scripts/get_secrets.sh
   ./scripts/get_secrets.sh
   ```
-
-- ### **Configure Jenkins Credentials for Private Registry**
-  **Update the Credentials in Jenkins:** 
-
-  **Dashboard > RCW > deploy-staging > Credentials > docker-server >** 
-  
-  Update with **https://nginx-reverse-proxy:80 -u <registry_username> -p <registry_password>**, use port 443 if you are using SSL
-
 
 - ### **SSL Configuration for Nginx**(Optional)
   - **Copy the SSL certificates and paste it inside the *nginx_config/ssl* folder**
@@ -84,7 +87,7 @@ cat /var/jenkins_home/secrets/initialAdminPassword
 - ### **Deploy Swarm and other Services**
   - **Copy the hostname and paste in inside the inventory/hosts folder**
 
-  - **Copy this command the paste this inside the script section inside the jenkins job**
+  - **Copy this command the paste this inside the script section inside the jenkins **
 
   ```
   ansible-playbook -i ./ansible_workspace_dir/inventory/hosts ./ansible_workspace_dir/main.yml
@@ -93,6 +96,11 @@ cat /var/jenkins_home/secrets/initialAdminPassword
   - **Now Jenkins will run ansible playbook after the build has been successful**
 
 
+- ### **Deploy the RCW Services**
+  - **Run the RCW Compose file**
+  ```
+  docker compose -f rcw-compose.yml up -d
+  ```
 
 ## Adding Ansible Roles for Services
 
