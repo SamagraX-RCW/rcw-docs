@@ -39,24 +39,25 @@ chmod +x ./scripts/jenkins_init.sh
 ./scripts/jenkins_init.sh
 ```
 
+- ### **Install recommended plugins and restart Jenkins**
+```
+sudo systemctl restart jenkins
+```
+
 - ### **Configure Jenkins Credentials for Private Registry**
     - #### **Update the Registry Credentials in Jenkins:** 
 
         **Dashboard > RCW > deploy-staging > Credentials > docker-server**
         
-        Update with **https://nginx-reverse-proxy:80**, also create new credentials for registry username and password**
+        Update with **http://localhost:80**, also create new credentials for registry username and password**
 
     - #### **Update the job credentials for anisble deployment**
 
-        **Dashboard > RCW > deploy-staging > credentials/identity/schema > configure**
+      **Dashboard > RCW > deploy-staging > credentials/identity/schema > configure**
 
-    - #### **Add Vault Server Address and Token Secret**
-
-      **Dashboard > Manage Jenkins > System > System > Environment Variables**
-
-      *Add VAULT_TOKEN and VAULT_ADDR*
-
-
+    ```
+    ansible-playbook -i ~/devops/ansible_workspace_dir/inventory/hosts --extra-vars  "deploy_host_name=master[0] VAULT_TOKEN='${VAULT_TOKEN}' VAULT_ADDR='${VAULT_ADDR}'" ~/devops/ansible_workspace_dir/main.yml --tag deploy-credential
+    ```
 
 
 - ### **Now run the compose file to deploy Registry, Nginx and Vault** 
@@ -80,6 +81,16 @@ docker compose up -d
   chmod +x ./scripts/get_secrets.sh
   ./scripts/get_secrets.sh
   ```
+
+  - #### **Add Vault Server Address and Token Secret**
+
+  ```
+  cat ./keys.txt
+  ```
+
+  **Copy the root key and paste inside -> Dashboard > Manage Jenkins > System > Environment Variables**
+
+  *Add VAULT_TOKEN=xxxxx and VAULT_ADDR=http://127.0.0.1:8200*
 
 - ### **Configure Ansible hosts**
   - **Copy the hostname and paste in inside the ./ansible_workspace_dir/inventory/hosts file**
