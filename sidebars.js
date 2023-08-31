@@ -10,7 +10,7 @@ module.exports = {
       type: 'category',
       label: 'Setup',
       collapsed: false,
-      items: ['setup/swarm_based', 'setup/onPremise_based'],
+      items: ['setup/swarm_based', 'setup/compose_based'],
     },
 
   ],
