@@ -1,5 +1,5 @@
 ---
-title: Deploying on Server
+title: Composed Based Deployment
 ---
 
 <head>
@@ -10,11 +10,12 @@ title: Deploying on Server
   />
 </head>
 
-To get started with setting up the DevOps Pipeline.
+Here we'll deploy our pipeline in the Docker Container using compose.
 
 ## Pre-requisites:
 - Jenkins Server for running pipelines
 - Hashicorp Vault for storing secrets
+- Docker Swarm (This could be your localhost as well)
 - Private Docker Registry
 - Ansible for deploying swarm nodes
 
@@ -55,23 +56,20 @@ chmod +x ./scripts/jenkins_init.sh
 
       *Add VAULT_TOKEN and VAULT_ADDR*
 
-- ### **Install Vault, Nginx and Registry**
-```
-chmod  +x ./scripts/install_jenkins_vault_registry
-./scripts/install_jenkins_vault_registry
-```
 
-- ### **Create Swarm nodes and deploy RCW Services**
+
+
+- ### **Now run the compose file to deploy Registry, Nginx and Vault** 
 ```
-ansible-playbook -i ./ansible_workspace_dir/inventory/hosts ./ansible_workspace_dir/main.yml 
+docker compose up -d
 ```
 
 - ### **Configure Vault**
 
   - **Run the script to init the vault & generate unseal tokens**
   ```
-  chmod +x setup_vault.sh
-  ./setup_vault.sh
+  chmod +x setup_vault_gha.sh
+  ./setup_vault_gha.sh
   ```
 
   ***Note: This will store the registry username & password (admin/admin) inside the vault***
@@ -82,3 +80,43 @@ ansible-playbook -i ./ansible_workspace_dir/inventory/hosts ./ansible_workspace_
   chmod +x ./scripts/get_secrets.sh
   ./scripts/get_secrets.sh
   ```
+
+- ### **Configure Ansible hosts**
+  - **Copy the hostname and paste in inside the ./ansible_workspace_dir/inventory/hosts file**
+
+  - **The RCW Services will be deployed to the hosts after the Jenkins build**
+
+- ### **SSL Configuration for Nginx**(Optional)
+  - **Copy the SSL certificates and paste it inside the *nginx_config/ssl* folder**
+
+  - **Now run the script**
+    ```
+    chmod +x ./scripts/set_up_ssl.sh
+    ./scripts/set_up_ssl.sh
+    ```
+  
+  - ***This script will store the ssl certs content inside the Vault as KV(key value) and keep as environment variable inside the Nginx container***
+
+- ### **Deploy Swarm and other Services**
+  - **Deploy RCW compose services**
+  ```
+  docker compose -f rcw-compose.yml up -d
+  ```
+
+## Adding Ansible Roles for Services
+
+- ### **Run the Script**
+
+```
+chmod +x /scripts/roles.sh
+./scripts/roles.sh
+```
+
+- **Give the name of the role**
+
+    eg. monitoring
+
+
+- **Now give the variables for that role**
+
+    eg. no. of replicas : 1/2/3
