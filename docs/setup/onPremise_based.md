@@ -25,66 +25,60 @@ git clone https://github.com/SamagraX-RCW/devops.git
 ```
 
 
-- #### **Copy the host ip address and paste it inside ansible_workspace_dir/inventory/hosts**
- 
-
-
-- ### **Run the scripts to install Ansible and start services on admin nodes** 
-
+- ### **Run the scripts to install Docker Ansible and Vault Cli** 
 ```
-chmod +x ./scripts/ansible_init.sh
-./scripts/ansible_init.sh
+chmod +x ./scripts/setup.sh
+./scripts/setup.sh
 ```
+<!-- - Get your SSL key from CA(Certified Authority) and paste it inside the ssl certificate(docker-registry.crt) -->
 
+- ### **Install and Start Jenkins Service**
+```
+chmod +x ./scripts/jenkins_init.sh
+./scripts/jenkins_init.sh
+```
 
 - ### **Configure Jenkins Credentials for Private Registry**
-  **Go to** 
+    - #### **Update the Registry Credentials in Jenkins:** 
 
-  Dashboard > RCW > deploy-staging > Credentials > docker-server > Update with **http://localhost:80**
+        **Dashboard > RCW > deploy-staging > Credentials > docker-server**
+        
+        Update with **https://nginx-reverse-proxy:80**, also create new credentials for registry username and password**
 
-  - Also add ***username and password*** inside Jenkins credentials
+    - #### **Update the job credentials for anisble deployment**
 
+        **Dashboard > RCW > deploy-staging > credentials/identity/schema > configure**
 
-- ### **Initialize Docker Swarm server**
+    - #### **Add Vault Server Address and Token Secret**
+
+      **Dashboard > Manage Jenkins > System > System > Environment Variables**
+
+      *Add VAULT_TOKEN and VAULT_ADDR*
+
+- ### **Install Vault, Nginx and Registry**
+```
+chmod  +x ./scripts/install_jenkins_vault_registry
+./scripts/install_jenkins_vault_registry
+```
+
+- ### **Create Swarm nodes and deploy RCW Services**
+```
+ansible-playbook -i ./ansible_workspace_dir/inventory/hosts ./ansible_workspace_dir/main.yml 
+```
+
+- ### **Configure Vault**
+
+  - **Run the script to init the vault & generate unseal tokens**
+  ```
+  chmod +x setup_vault.sh
+  ./setup_vault.sh
+  ```
+
+  ***Note: This will store the registry username & password (admin/admin) inside the vault***
+
+  - **Run the script to get registry username and password from vault**
 
   ```
-  ansible-playbook -i ./ansible_workspace_dir/inventory/hosts ./ansible_workspace_dir/main.yml
+  chmod +x ./scripts/get_secrets.sh
+  ./scripts/get_secrets.sh
   ```
-
-- ### **Initialize RCW services**
-```
-ansible-playbook -i ./ansible_workspace_dir/inventory/hosts ./rcw-playboook.yml
-```
-
-<!-- - ### **SSL Configuration for Nginx**(Optional)
-  - **Copy the SSL certificates and paste it inside the *nginx_config/ssl* folder**
-
-  - **Now run the script**
-    ```
-    chmod +x ./scripts/set_up_ssl.sh
-    ./scripts/set_up_ssl.sh
-    ```
-  
-  - ***This script will store the ssl certs content inside the Vault as KV(key value) and keep as environment variable inside the Nginx container***
-
-
-  - **Now Jenkins will run ansible playbook after the build has been successful** -->
-
-
-<!-- ## Adding Ansible Roles for Services
-
-- ### **Run the Script**
-
-```
-chmod +x /scripts/roles.sh
-./scripts/roles.sh
-```
-
-- **Give the name of the role**
-
-    eg. monitoring
-
-
-- **Now give the variables for that role**
-
-    eg. no. of replicas : 1/2/3 -->

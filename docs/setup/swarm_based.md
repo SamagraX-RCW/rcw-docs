@@ -26,7 +26,7 @@ git clone https://github.com/SamagraX-RCW/devops.git
 ```
 
 
-- ### **Run the scripts to install Docker and Ansible** 
+- ### **Run the scripts to install Docker Ansible and Vault Cli** 
 ```
 chmod +x ./scripts/setup.sh
 ./scripts/setup.sh
@@ -46,7 +46,15 @@ chmod +x ./scripts/jenkins_init.sh
         
         Update with **https://nginx-reverse-proxy:80**, also create new credentials for registry username and password**
 
-  - #### **Add Vault Server Address and Token Secret**
+    - #### **Update the job credentials for anisble deployment**
+
+        **Dashboard > RCW > deploy-staging > credentials/identity/schema > configure**
+
+    - #### **Add Vault Server Address and Token Secret**
+
+      **Dashboard > Manage Jenkins > System > System > Environment Variables**
+
+      *Add VAULT_TOKEN and VAULT_ADDR*
 
 
 
@@ -73,6 +81,11 @@ docker compose up -d
   ./scripts/get_secrets.sh
   ```
 
+- ### **Configure Ansible hosts**
+  - **Copy the hostname and paste in inside the ./ansible_workspace_dir/inventory/hosts file**
+
+  - **The RCW Services will be deployed to the hosts after the Jenkins build**
+
 - ### **SSL Configuration for Nginx**(Optional)
   - **Copy the SSL certificates and paste it inside the *nginx_config/ssl* folder**
 
@@ -85,19 +98,7 @@ docker compose up -d
   - ***This script will store the ssl certs content inside the Vault as KV(key value) and keep as environment variable inside the Nginx container***
 
 - ### **Deploy Swarm and other Services**
-  - **Copy the hostname and paste in inside the inventory/hosts folder**
-
-  - **Copy this command the paste this inside the script section inside the jenkins **
-
-  ```
-  ansible-playbook -i ./ansible_workspace_dir/inventory/hosts ./ansible_workspace_dir/main.yml
-  ```
-
-  - **Now Jenkins will run ansible playbook after the build has been successful**
-
-
-- ### **Deploy the RCW Services**
-  - **Run the RCW Compose file**
+  - **Deploy RCW compose services**
   ```
   docker compose -f rcw-compose.yml up -d
   ```
