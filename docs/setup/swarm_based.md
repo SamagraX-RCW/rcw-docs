@@ -70,8 +70,7 @@ ansible-playbook -i ./ansible_workspace_dir/inventory/hosts ./ansible_workspace_
 
   - **Run the script to init the vault & generate unseal tokens**
   ```
-  chmod +x setup_vault.sh
-  ./setup_vault.sh
+  make start
   ```
 
   ***Note: This will store the registry username & password (admin/admin) inside the vault***
