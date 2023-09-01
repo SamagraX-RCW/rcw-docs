@@ -69,8 +69,7 @@ docker compose up -d
 
   - **Run the script to init the vault & generate unseal tokens**
   ```
-  chmod +x setup_vault_gha.sh
-  ./setup_vault_gha.sh
+  make start
   ```
 
   ***Note: This will store the registry username & password (admin/admin) inside the vault***
@@ -107,12 +106,6 @@ docker compose up -d
     ```
   
   - ***This script will store the ssl certs content inside the Vault as KV(key value) and keep as environment variable inside the Nginx container***
-
-- ### **Deploy Swarm and other Services**
-  - **Deploy RCW compose services**
-  ```
-  docker compose -f rcw-compose.yml up -d
-  ```
 
 ## Adding Ansible Roles for Services
 
