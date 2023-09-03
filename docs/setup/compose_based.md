@@ -57,14 +57,10 @@ sudo systemctl restart jenkins
         
         Update with **http://localhost:80**, also create new credentials for registry username and password**
 
-    - #### **Update the job credentials for anisble deployment**
+![Jenkins Registry Credntials Image](../assets/jenkins_registry_credentials.png)
 
-      **Dashboard > RCW > deploy-staging > credentials/identity/schema > configure**
 
-    ```
-    ansible-playbook -i ~/devops/ansible_workspace_dir/inventory/hosts --extra-vars  "deploy_host_name=master[0] VAULT_TOKEN='${VAULT_TOKEN}' VAULT_ADDR='${VAULT_ADDR}'" ~/devops/ansible_workspace_dir/main.yml --tag deploy-credential
-    ```
-
+![Jenkins Registry Credentials Image](../assets/jenkins_credentials-1.png)
 
 - ### **Now run the compose file to deploy Registry, Nginx and Vault** 
 ```
@@ -73,7 +69,7 @@ docker compose up -d
 
 ![Docker Compose image](../assets/docker_compose_up.png)
 
-- ### **Configure Vault**
+- ### **Start RCW Services**
 
   - **Run the script to init the vault & generate unseal tokens**
   ```
@@ -89,20 +85,7 @@ docker compose up -d
   ./scripts/get_secrets.sh
   ```
 
-  - #### **Add Vault Server Address and Token Secret**
 
-  ```
-  cat ./keys.txt
-  ```
-
-  **Copy the root key and paste inside -> Dashboard > Manage Jenkins > System > Environment Variables**
-
-  *Add VAULT_TOKEN=xxxxx and VAULT_ADDR=http://127.0.0.1:8200*
-
-- ### **Configure Ansible hosts**
-  - **Copy the hostname and paste in inside the ./ansible_workspace_dir/inventory/hosts file**
-
-  - **The RCW Services will be deployed to the hosts after the Jenkins build**
 
 - ### **SSL Configuration for Nginx**(Optional)
   - **Copy the SSL certificates and paste it inside the *nginx_config/ssl* folder**
