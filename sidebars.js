@@ -4,9 +4,15 @@ module.exports = {
       type: 'category',
       label: 'Getting Started',
       collapsed: false,
-      items: ['index', 'intro/environment', 'intro/cli'],
+      items: ['index'],
     },
-    
+    {
+      type: 'category',
+      label: 'Setup',
+      collapsed: false,
+      items: ['setup/compose_based'],
+    },
+
   ],
 
   // api: [{
