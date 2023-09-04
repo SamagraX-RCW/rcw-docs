@@ -1,5 +1,5 @@
 ---
-title: Composed Based Deployment
+title: Compose Based Deployment
 ---
 
 <head>
