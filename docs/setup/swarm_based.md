@@ -64,17 +64,24 @@ systemctl restart jenkins
 
         **Dashboard > RCW > deploy-staging > Credentials > docker-server**
         
-        Update with **https://nginx-reverse-proxy:80**, also create new credentials for registry username and password**
+        Update with **https://nginx-reverse-proxy:80**, also create new credentials for registry username and password
+        ![Jenins Registry Credentials](../assets/jenkins_registry_screenshot.png)
 
-    - #### **Update the job credentials for anisble deployment**
+        ![Jenkins Registry Credentials 2](../assets/jenkins_registry_credentials.png)
+
+    - #### **Update the job credentials for ansible deployment**
 
         **Dashboard > RCW > deploy-staging > credentials/identity/schema > configure**
+      
+      ![Jenkins Ansible Script](../assets/jenkins_ansible_credentials.png)
 
     - #### **Add Vault Server Address and Token Secret**
 
       **Dashboard > Manage Jenkins > System > System > Environment Variables**
 
       *Add VAULT_TOKEN and VAULT_ADDR*
+    
+    ![Jenkins Vault Credentials](../assets/jenkins_env_vars.png)
 
 - ### **Create Swarm nodes and deploy RCW Services**
 ```
