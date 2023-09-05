@@ -57,7 +57,7 @@ sudo systemctl restart jenkins
         
         Update with **http://localhost:80**, also create new credentials for registry username and password**
 
-![Jenkins Registry Credntials Image](../assets/jenkins_registry_credentials.png)
+![Jenkins Registry Credentials Image](../assets/jenkins_registry_credentials.png)
 
 
 ![Jenkins Registry Credentials Image](../assets/jenkins_credentials-1.png)
