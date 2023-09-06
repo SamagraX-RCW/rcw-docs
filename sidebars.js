@@ -4,13 +4,13 @@ module.exports = {
       type: 'category',
       label: 'Getting Started',
       collapsed: false,
-      items: ['index']
+      items: ['index'],
     },
     {
       type: 'category',
       label: 'Setup',
       collapsed: false,
-      items: ['setup/swarm_based']
+      items: ['setup/compose_based', 'setup/swarm_based'],
     },
 
   ],
