@@ -22,6 +22,12 @@ Here we'll deploy our pipeline in the Docker Container using compose.
 git clone https://github.com/SamagraX-RCW/devops.git
 ```
 
+- ### **Run the scripts to install Docker and Docker Compose** 
+```
+chmod +x ./scripts/setup.sh
+./scripts/setup.sh
+```
+
 - ### **Now run the compose file to deploy Registry, Nginx and Vault** 
 ```
 docker compose up -d
