@@ -56,8 +56,6 @@ docker compose up -d
 ![Docker Compose image](../assets/docker_compose_up.png)
 
 - ### **Start RCW Services**
-
-  - **Run the script to init the vault & generate unseal tokens**
-  ```
-  make start
-  ```
+```
+make start
+```
